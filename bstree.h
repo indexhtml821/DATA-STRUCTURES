@@ -22,7 +22,11 @@ public:
     // Inicializacion de datos miembro
     bstnode(const T &k, bstnode<T> *w = nullptr, bstnode<T> *y = nullptr, bstnode<T> *z = nullptr) : key(k), p(w), left(y), right(z){};
 
-    ~bstnode(){};
+    ~bstnode()
+    {
+        delete left;
+        delete right;
+    };
 };
 
 // Arbol de busqueda binario:
@@ -30,14 +34,16 @@ template <typename T>
 class bstree
 {
 public:
-    bstnode<T> *root; // raiz del arbol
+    bstnode<T> *root = nullptr; // raiz del arbol
 
     bstree(){
         // Constructor (crea un arbol vacio)
     };
 
-    ~bstree(){
+    ~bstree()
+    {
         // Destructor (borra el arbol)
+        delete root;
     };
 
     void Insert(bstnode<T> *z)
@@ -73,6 +79,29 @@ public:
         {
             y->right = z;
         }
+    };
+
+    void InsertGreaters(bstnode<T> *z)
+    {
+        // Inserta el nodo z en la posicion que le corresponde en el arbol.
+
+        bstnode<T> *y = nullptr;
+        bstnode<T> *x = root;
+
+        while (x != nullptr)
+        {
+
+            y = x;
+            x = x->right;
+        }
+        if (y == nullptr)
+        {
+            root = z;
+            return;
+        }
+        z->p = y;
+
+        y->right = z;
     };
 
     void InorderWalk(bstnode<T> *x)
@@ -114,9 +143,9 @@ public:
             }
             else
             {
-                x = x->right
+                x = x->right;
             }
-                }
+        }
         return x;
     };
 
@@ -143,8 +172,9 @@ public:
 
     bstnode<T> *Successor(bstnode<T> *x)
     {
-        bstnode<T> *y;
         // Devuelve el nodo cuya llave es la que le sigue a la del nodo x. Si no existe el nodo, devuelve nullptr.
+
+        bstnode<T> *y;
         if (x->right != nullptr)
         {
             return Minimum(x->right);
@@ -193,13 +223,13 @@ public:
 
             root = v;
         }
-        else if (u == u.p.left)
+        else if (u == u->p->left)
         {
-            u.p.left = v;
+            u->p->left = v;
         }
         else
         {
-            u->p->right = v
+            u->p->right = v;
         }
         if (v != nullptr)
         {

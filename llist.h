@@ -44,17 +44,21 @@ public:
         nil->prev = nil;
     };
 
-    ~llist(){
-         Destructor (borra la lista)
-         llnode<T> *del = nil->next;
+    ~llist()
+    {
 
-         while (del != 0)
-         {
+        llnode<T> *del = nil->next;
+        nil->next = nullptr;
 
-             llnode<T> *actual = del->next;
-             delete del;
-             del = actual;
-         }
+        while (del != nullptr)
+        {
+
+           llnode<T> *temp = del;
+            del = del->next;
+            delete temp;
+        }
+        delete del;
+        
     };
 
     void Insert(llnode<T> *x)
@@ -90,6 +94,17 @@ public:
 
         x->prev->next = x->next;
         x->next->prev = x->prev;
+    };
+
+    void print()
+    {
+        llnode<T> *x = nil->next;
+
+        while (x != nil)
+        {
+            cout << x->key << "-";
+            x = x->next;
+        }
     };
 };
 
